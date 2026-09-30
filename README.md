@@ -70,7 +70,7 @@ value: <bool>}], revision)` → settings 服务落 profile patch → loader sche
 **方式一：从 GitHub 克隆后本地安装（推荐）**
 
 ```bash
-git clone https://github.com/<你的用户名>/dsh-powerbox.git
+git clone https://github.com/MorrowSol/dsh-powerbox.git
 cd dsh-powerbox
 npm install          # 安装 schemasty 依赖（可选，仅宿主 Config 校验用）
 ```

@@ -17,6 +17,11 @@
     "sidebar"
   ],
   "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorrowSol/dsh-powerbox.git"
+  },
+  "homepage": "https://github.com/MorrowSol/dsh-powerbox#readme",
   "scripts": {
     "build": "node scripts/build-client.mjs",
     "test": "node tests/host-permission.mjs && node tests/host-plannotator.mjs && node tests/client.mjs"

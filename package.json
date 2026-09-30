@@ -1,0 +1,65 @@
+{
+  "name": "dsh-powerbox",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "工作区四合一插件：自定义权限（附加可写目录）、计划评审内嵌面板、工作区活动指示、侧边栏按钮布局——带「工具箱」设置页统一开关。",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "plugin",
+    "powerbox",
+    "sandbox",
+    "permission",
+    "workspace",
+    "plan-review",
+    "sidebar"
+  ],
+  "main": "./index.js",
+  "scripts": {
+    "build": "node scripts/build-client.mjs",
+    "test": "node tests/host-permission.mjs && node tests/host-plannotator.mjs && node tests/client.mjs"
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "~3.18.4"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "host/",
+    "client/",
+    "scripts/",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "slots",
+        "connection",
+        "timer",
+        "sessions",
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-settings-general"
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=20",
+    "dsh": ">=0.1.7"
+  },
+  "license": "MIT"
+}

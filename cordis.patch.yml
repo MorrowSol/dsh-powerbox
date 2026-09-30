@@ -1,0 +1,55 @@
+# dsh-powerbox 的 profile bundle 补丁层。
+#
+# 由 profile 的 `dsh.profile.bundles` 自动加载（package.json 的 dsh.bundle.patch）。
+# 三段作用（承接原四个独立包的补丁，合并后一次声明）：
+#
+#   1. 覆盖 permission 行 —— 合并三方的贡献：官方 3 预设 + 原
+#      dsh-permission-extras 的「自定义权限」+ @cerbur/clutch-dsh-worktree 的
+#      「Worktree Full Access」。
+#      补丁语义：非 insert 补丁整体替换目标的 config，所以必须重述全部预设；
+#      迁移前 profile 里 worktree 层本来就排在 permission-extras 之后、一直在
+#      覆盖掉「自定义权限」（遗留问题，本次合并顺带修复）。顺序即客户端渲染
+#      顺序。因此本 bundle 必须排在 @deepseek-ai/dsh-base 之后（permission 行
+#      由它提供）。
+#
+#   2. 覆盖 connection 行 —— 原 dsh-plannotator-embedded 的要求：
+#      connection.rpc.handle() 挂载 HTTP 路由需要 ctx.webServer，而上游只声明
+#      webRuntime，所以该行必须声明 `inject: [webRuntime, webServer]`。
+#
+#   3. 追加本插件自己的行（id: toolkit）。无 id 的 insert = 追加到 profile
+#      根条目列表末尾，与 dsh-base / dsh-web-app 等 bundle 层的做法一致。
+
+- id: permission
+  name: '@deepseek-ai/dsh-permission-presets'
+  config:
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: ask
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+      自定义权限:
+        sandbox: workspace-write
+        approval: ask
+        name: 自定义权限
+        description: 工作区内修改，并额外允许写入你在「设置 → 自定义权限」中为当前工作区添加的目录。
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+      worktree-full-access:
+        sandbox: danger-full-access
+        approval: ask
+        name: Worktree Full Access
+        description: Full file access for Worktree metadata while keeping approval prompts enabled.
+
+- id: connection
+  inject: [webRuntime, webServer]
+
+- insert:
+    - id: toolkit
+      name: 'dsh-powerbox'
+      # 行级 inject：给本 entry 的 fiber 授予 connection 服务（plannotator 的
+      # apply 直接访问 ctx.connection）。cordis 从模块 default export 读
+      # inject；行级声明在模块缓存未刷新时也能生效，两者取并集更稳。
+      inject: [connection]

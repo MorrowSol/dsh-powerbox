@@ -67,25 +67,29 @@ value: <bool>}], revision)` → settings 服务落 profile patch → loader sche
 
 ## 安装
 
-**方式一：从 GitHub 克隆后本地安装（推荐）**
+**方式一：dsh CLI（推荐）**
 
 ```bash
+# 从 GitHub 直接安装（支持任意 git/npm 包规格；把 web 换成你的 profile 名）
+dsh plugin --profile web add https://github.com/MorrowSol/dsh-powerbox.git
+
+# 或先克隆再从本机目录安装
 git clone https://github.com/MorrowSol/dsh-powerbox.git
-cd dsh-powerbox
-npm install          # 安装 schemasty 依赖（可选，仅宿主 Config 校验用）
+dsh plugin --profile web add ./dsh-powerbox
 ```
 
-然后在 dsh 里安装：打开 Web UI 的「设置 → 插件」，选择"安装本地插件"，指向本目录。
+**方式二：Web UI**
 
-**方式二：从已在本机的目录安装**
+「设置 → 插件」→ 安装本地插件，选择仓库目录。
 
-插件的 `client.js` 是已构建好的产物，仓库内直接可用；如果你改了 `client/` 下的源码：
+安装完成后按提示重启 / 重激活插件，即可在「设置 → 工具箱」看到四个功能开关。仓库内的
+`client.js` 是已构建好的产物，安装无需先 build；若自行修改 `client/` 下源码，先重新拼接：
 
 ```bash
 node scripts/build-client.mjs   # 重新拼接 client.js
 ```
 
-改动宿主侧（`index.js` / `host/`）后在插件管理里关/开一次本插件即可生效。
+改动宿主侧（`index.js` / `host/`）后重启 dsh（或在插件管理里关/开一次）生效。
 
 ## 构建与测试
 

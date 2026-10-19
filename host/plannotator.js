@@ -20,7 +20,9 @@
  * through `ctx.webServer` resolved on the *connection row's own context*
  * (the reader binding does not survive the `.rpc` shadow), so the `connection`
  * row itself must declare `webServer`. This package's bundle patch
- * (cordis.patch.yml) overrides that row with `inject: [webRuntime, webServer]`.
+ * (cordis.patch.yml) overrides that row with `inject: [webStartup, webServer]`
+ * (webStartup stays because the official row's config.trustedHosts resolves
+ * from it; the old webRuntime service was removed in dsh 0.2.1).
  * Consumer-side inject only needs `connection`.
  */
 

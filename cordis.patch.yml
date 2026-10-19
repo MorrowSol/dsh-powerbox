@@ -13,8 +13,10 @@
 #      由它提供）。
 #
 #   2. 覆盖 connection 行 —— 原 dsh-plannotator-embedded 的要求：
-#      connection.rpc.handle() 挂载 HTTP 路由需要 ctx.webServer，而上游只声明
-#      webRuntime，所以该行必须声明 `inject: [webRuntime, webServer]`。
+#      connection.rpc.handle() 挂载 HTTP 路由需要 ctx.webServer。官方行自带
+#      webStartup（config.trustedHosts 依赖它），所以本行必须声明
+#      `inject: [webStartup, webServer]`。dsh 0.2.1 已移除 webRuntime 服务，
+#      不能再像 0.2.0 时代那样写 [webRuntime, webServer]。
 #
 #   3. 追加本插件自己的行（id: toolkit）。无 id 的 insert = 追加到 profile
 #      根条目列表末尾，与 dsh-base / dsh-web-app 等 bundle 层的做法一致。
@@ -44,7 +46,7 @@
         description: Full file access for Worktree metadata while keeping approval prompts enabled.
 
 - id: connection
-  inject: [webRuntime, webServer]
+  inject: [webStartup, webServer]
 
 - insert:
     - id: toolkit
